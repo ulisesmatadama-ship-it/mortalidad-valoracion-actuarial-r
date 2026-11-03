@@ -1,0 +1,7 @@
+"familia","modelo","AIC"
+"LM_logit","lineal",-98.4678444343368
+"LM_logit","cuadratico",353.583817963004
+"LM_logit","lineal_cuadratico",-240.290327691965
+"GLM_binomial","lineal",1463.71306353067
+"GLM_binomial","cuadratico",365834.790860052
+"GLM_binomial","lineal_cuadratico",784.184937263141
