@@ -8,8 +8,9 @@ no conserva una referencia al archivo HMD exacto ni la fecha de descarga.
 
 HMD distingue sus estimaciones, publicadas bajo CC BY 4.0, de los datos de entrada,
 que conservan las condiciones de sus proveedores. Por ello no se asigna una licencia
-HMD automáticamente al CSV compilado. El archivo se conserva localmente y los
-gráficos/resultados documentan su uso académico y su fuente declarada.
+HMD automáticamente al CSV compilado. El archivo se conserva sin modificar dentro de este repositorio privado. Su inclusion
+no se presenta como autorizacion para redistribucion publica; los graficos y resultados
+documentan el uso academico y su fuente declarada.
 
 - Condiciones: https://www.mortality.org/Data/UserAgreement
 - Cita: https://www.mortality.org/Research/CitationGuidelines
@@ -32,6 +33,6 @@ el ejercicio, pero no demuestra que la aproximación probabilística sea apropia
 
 ## Ejemplo sin datos externos
 
-`Rscript --vanilla scripts/ejecutar.R` genera conteos binomiales ficticios con
+`Rscript --vanilla scripts/ejecutar.R --demo` genera conteos binomiales ficticios con
 denominadores enteros y semilla fija. Esa demo no representa mortalidad de Chile
 ni sustituye al CSV académico.

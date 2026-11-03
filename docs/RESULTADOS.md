@@ -30,7 +30,7 @@ unidades monetarias al final del año de fallecimiento; descuento supuesto de 4.
 **La valoración histórica no queda reproducida.** El código histórico referencia
 `datos$Age`, columna que no existe en el CSV recibido. La adaptación identifica
 explícitamente las edades por su valor y verifica que se proyecten 25–54.
-El informe original y su fuente se conservan fuera del repositorio público.
+El informe original y su fuente se conservan localmente; el CSV esta versionado en este repositorio privado.
 
 No se atribuye toda la diferencia a ese defecto sin una reproducción de la versión
 que generó el HTML. Tampoco se explica como simple redondeo o cambio de semilla.

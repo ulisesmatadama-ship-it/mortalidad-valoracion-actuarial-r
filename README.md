@@ -1,102 +1,98 @@
 # Graduación de mortalidad y valoración actuarial en R
 
-Comparación de **LM sobre logit y GLM binomial**, simulación de incertidumbre
-paramétrica y valoración de prestaciones de fallecimiento en una cartera teórica.
-Proyecto académico en equipo incluido en el portafolio de **Ulises Matadama Lara**.
+Proyecto académico en equipo: **LM sobre logit, GLM binomial, simulación
+paramétrica y valoración de prestaciones de fallecimiento**.
+Portafolio de **Ulises Matadama Lara**.
 
-> Código ejecutable y resultados recalculados. Las medidas de riesgo son
-> académicas: no constituyen SCR regulatorio ni garantía de solvencia.
+> **Repositorio privado con el CSV académico original.** Antes de hacerlo público,
+> revisar procedencia, condiciones de difusión y autoría colectiva.
 
-## Qué demuestra el proyecto
+## Qué contiene
 
-- Validación de datos por edad y comparación de tres especificaciones por AIC.
-- Graduación de mortalidad con GLM y diagnóstico de dispersión.
-- Simulación paramétrica reproducible, valoración descontada y medidas de cola.
-- Comunicación de supuestos, limitaciones y diferencias entre ejercicios y aplicaciones regulatorias.
+- CSV original, conservado sin modificaciones.
+- Pipeline ejecutable en R base, con semilla fija y sin instalar paquetes.
+- Comparación de especificaciones, curva graduada, diagnóstico y medidas de riesgo.
+- Resultados recalculados y conciliación explícita con el informe histórico.
+- Pruebas locales y workflow de GitHub Actions.
 
-![Graduación del CSV académico](resultados/real/mortalidad.png)
+![Graduación de mortalidad](resultados/real/mortalidad.png)
 
-## Probar sin descargar datos
+## Ejecutar el proyecto completo
 
-Requiere **R 4.5.1 o compatible**. El motor usa sólo paquetes que acompañan a R;
-no necesita `tidyverse`, Quarto, credenciales ni instalar dependencias.
-
-Desde la raíz del repositorio:
+Requiere **R 4.5.1 o compatible**. Desde la raíz del repositorio:
 
 ```sh
 Rscript --vanilla scripts/ejecutar.R
 Rscript --vanilla tests/verificar.R
 ```
 
-La primera orden genera una **demo sintética** etiquetada en `resultados/demo/`.
-No reproduce la mortalidad de Chile ni se presenta como resultado de la entrega.
+La ejecución principal utiliza `data/academico/datos_equipo1.csv` y actualiza
+`resultados/real/`. No genera datos para sustituir esa entrada.
 
-## Ejecutar con el CSV académico
-
-El archivo `datos_equipo1.csv` ya fue recuperado y se utilizó para recalcular los
-resultados de `resultados/real/`. No se redistribuye en este paquete público;
-su copia local y su huella se conservan fuera del repositorio.
+Opcionalmente se puede indicar otro CSV o ejecutar una prueba con datos sintéticos:
 
 ```sh
-Rscript --vanilla scripts/ejecutar.R --datos data/local/datos_equipo1.csv --salida resultados/real
+Rscript --vanilla scripts/ejecutar.R --datos ruta/al/archivo.csv --salida resultados/local
+Rscript --vanilla scripts/ejecutar.R --demo
 ```
 
-Puede indicarse otra ruta local con comillas. Ver [datos y fuentes](docs/DATOS_Y_FUENTES.md).
+La demo opcional produce `resultados/demo/`, etiquetados por separado.
 
-## Método y alcance
+## Datos, método y supuestos
 
-Se seleccionan edades 20–99 y se comparan términos lineal, cuadrático y combinado.
-Se conserva la aproximación binomial del ejercicio original, que redondea `Total`.
-**Si ese denominador es exposición en personas-año, muertes/Total no es directamente
-una probabilidad anual.** Por eso se denomina ratio observado y se explicita esta
-limitación: el redondeo no resuelve la diferencia de unidades.
+La fuente declarada en la entrega es HMD, Chile, año 2000, ambos sexos.
+Se seleccionan edades 20–99 y se comparan términos lineal, cuadrático y combinado,
+por separado para LM del logit y GLM binomial.
 
-Los coeficientes GLM se simulan bajo una normal asintótica, con semilla fija y
-20,000 escenarios. El ejercicio de valoración supone 1,000 asegurados de edad 25,
-plazo de 30 años, prestación de 300,000 unidades monetarias al final del año de
-fallecimiento y descuento anual supuesto de 4.4%. La entrega expresaba la prestación
-en UDIS; aquí no se convierte a pesos ni se adopta una tasa libre de riesgo observada.
+Se conserva la aproximación binomial del ejercicio, que redondea `Total`.
+Si ese denominador representa personas-año, muertes/Total es una tasa central y
+no directamente una probabilidad anual. El redondeo no resuelve esa diferencia
+de unidades; la limitación se documenta en vez de presentar el ajuste como definitivo.
 
-Se reportan media del valor de prestaciones (`BEL_academico`), VaR y TVaR de esa
-distribución, junto con sus excesos sobre la media. La incertidumbre representada
-es **paramétrica**, sin simular muertes individuales ni todos los riesgos de una aseguradora.
+Se simulan coeficientes bajo una normal asintótica con 20,000 escenarios y semilla
+12345. No es una posterior bayesiana ni una simulación de fallecimientos individuales.
 
-Consultar [revisión técnica](docs/REVISION_TECNICA.md) antes de interpretar las bandas,
-los cuantiles o las diferencias respecto de la entrega histórica.
+La valoración supone 1,000 asegurados de edad 25, plazo de 30 años, prestación de
+300,000 unidades monetarias al final del año de fallecimiento y descuento supuesto
+de 4.4%. La entrega expresaba la prestación en UDIS; no se hace conversión a pesos.
 
-**Conciliación con el informe original:** el ajuste GLM reproduce sus coeficientes
-y AIC, pero la valoración histórica de prestaciones no se reproduce con la edad
-inicial y el horizonte documentados. Se publican los valores recalculados y la
-comparación en [resultados explicados](docs/RESULTADOS.md), sin sustituir silenciosamente
-las cifras de la entrega original.
+## Resultados y conciliación
 
-## Resultados y archivos
+El GLM combinado reproduce los coeficientes y AIC del informe histórico.
+La valoración histórica de prestaciones no se reproduce con la edad y el plazo
+documentados. Aquí se presentan las cifras recalculadas, sin reemplazar
+silenciosamente el resultado anterior. Consultar [resultados explicados](docs/RESULTADOS.md).
+
+Se reportan media del valor de prestaciones (`BEL_academico`), VaR y TVaR de la
+incertidumbre paramétrica y sus excesos sobre la media. No son un BEL regulatorio
+completo ni un SCR regulatorio y no garantizan solvencia.
+
+![Valor actuarial](resultados/real/riesgo.png)
+
+## Archivos principales
 
 | Ruta | Contenido |
 |---|---|
-| `R/mortalidad.R` | Preparación, modelos, simulación y valoración |
-| `scripts/ejecutar.R` | Pipeline por línea de comandos |
+| `data/academico/` | CSV original y procedencia |
+| `R/mortalidad.R` | Datos, modelos, simulación y valoración |
+| `scripts/ejecutar.R` | Pipeline reproducible |
 | `tests/verificar.R` | Identidad actuarial, escala, cola y reproducibilidad |
-| `resultados/real/` | CSV y gráficos del archivo académico recuperado |
-| `resultados/demo/` | Ejemplo independiente con datos inventados |
-| `docs/` | Revisión, procedencia, créditos y resultados explicados |
+| `resultados/real/` | CSV, gráficos y entorno de la ejecución principal |
+| `resultados/demo/` | Prueba sintética opcional y diferenciada |
+| `docs/` | Revisión, resultados, procedencia y créditos |
 
-![Incertidumbre del valor esperado](resultados/real/riesgo.png)
-
-Las cifras se generan por código, no se copian del texto del informe histórico.
-El archivo `sessionInfo.txt` registra el entorno y `diagnostico.csv` la semilla,
-el número de simulaciones y la dispersión. Las bandas son nominales, no intervalos
-predictivos validados. GitHub Actions vuelve a ejecutar las pruebas y la demo sintética.
-
-## Autoría y referencias
+## Autoría y fuentes
 
 Trabajo original de Carlos Cárdenas Osorio, Diego Uriel Hernández Sotelo,
-Ulises Matadama Lara y Samuel Arias García. [Créditos completos](docs/CREDITOS.md).
+Ulises Matadama Lara y Samuel Arias García. Se reconoce autoría colectiva.
 
-- Fuente declarada: [Human Mortality Database](https://www.mortality.org/), Chile, año 2000.
-- [GLM en R](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html).
-- [Condiciones de HMD](https://www.mortality.org/Data/UserAgreement).
+- [Créditos](docs/CREDITOS.md).
+- [Revisión técnica](docs/REVISION_TECNICA.md).
+- [Datos y fuentes](docs/DATOS_Y_FUENTES.md).
+- [Verificación](docs/VERIFICACION.md).
+- [Human Mortality Database](https://www.mortality.org/).
+- [Documentación de GLM en R](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html).
 
-La documentación distingue la fuente declarada, los cálculos verificados y las
-limitaciones que requieren trabajo adicional. No se afirma un ajuste explícito
-de Gompertz ni una estimación bayesiana que el código no implementa.
+No se afirma una graduación explícita de Gompertz ni una estimación bayesiana
+que el código no implementa. Las bandas son nominales y requieren considerar
+el diagnóstico de dispersión antes de interpretarlas.

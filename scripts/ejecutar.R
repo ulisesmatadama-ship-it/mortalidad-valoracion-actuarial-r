@@ -6,8 +6,9 @@ leer_opcion <- function(nm, defecto) {
   if (i == length(args)) stop(paste('Falta valor para', nm), call. = FALSE)
   args[i + 1]
 }
-entrada <- leer_opcion('--datos', '')
-es_demo <- !nzchar(entrada)
+entrada <- leer_opcion('--datos', 'data/academico/datos_equipo1.csv')
+es_demo <- '--demo' %in% args
+if (es_demo) entrada <- ''
 salida <- leer_opcion('--salida', if (es_demo) 'resultados/demo' else 'resultados/real')
 nsim <- as.integer(leer_opcion('--nsim', '20000'))
 dir.create(salida, recursive = TRUE, showWarnings = FALSE)
